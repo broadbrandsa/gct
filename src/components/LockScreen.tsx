@@ -1,206 +1,211 @@
-"use client";
+'use client'
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import Image from "next/image";
+import { useState, useEffect, useRef, useCallback, type ReactNode } from 'react'
+import Image from 'next/image'
 
-const LOCK_CODE = "1004";
-const STORAGE_KEY = "gct_proposal_v1_unlocked";
+const LOCK_CODE = '1004'
+const STORAGE_KEY = 'gct_proposal_v1_unlocked'
 
-export default function LockScreen({ children }: { children: React.ReactNode }) {
-  const [unlocked, setUnlocked] = useState<boolean | null>(null);
-  const [code, setCode] = useState("");
-  const [error, setError] = useState(false);
-  const [exiting, setExiting] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+export default function LockScreen({ children }: { children: ReactNode }) {
+  const [isUnlocked, setIsUnlocked] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
+  const [code, setCode] = useState('')
+  const [error, setError] = useState(false)
+  const [shaking, setShaking] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    setUnlocked(stored === "true");
-  }, []);
+    setMounted(true)
+    if (typeof window !== 'undefined' && localStorage.getItem(STORAGE_KEY) === 'true') {
+      setIsUnlocked(true)
+    }
+  }, [])
 
   const handleUnlock = useCallback(() => {
-    setExiting(true);
-    setTimeout(() => {
-      localStorage.setItem(STORAGE_KEY, "true");
-      setUnlocked(true);
-    }, 900);
-  }, []);
+    setIsExiting(true)
+    localStorage.setItem(STORAGE_KEY, 'true')
+    setTimeout(() => setIsUnlocked(true), 900)
+  }, [])
 
-  const handleInput = useCallback(
-    (value: string) => {
-      const digits = value.replace(/\D/g, "").slice(0, 4);
-      setCode(digits);
-      setError(false);
+  const handleCodeChange = useCallback((value: string) => {
+    if (value.length > 4) return
+    setError(false)
+    setCode(value)
 
-      if (digits.length === 4) {
-        if (digits === LOCK_CODE) {
-          handleUnlock();
-        } else {
-          setError(true);
-          setTimeout(() => {
-            setCode("");
-            setError(false);
-          }, 1500);
-        }
+    if (value.length === 4) {
+      if (value === LOCK_CODE) {
+        handleUnlock()
+      } else {
+        setError(true)
+        setShaking(true)
+        setTimeout(() => {
+          setShaking(false)
+          setCode('')
+        }, 700)
       }
-    },
-    [handleUnlock]
-  );
+    }
+  }, [handleUnlock])
 
-  const handleLock = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
-    setUnlocked(false);
-    setExiting(false);
-    setCode("");
-  }, []);
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Backspace') {
+      setCode(prev => prev.slice(0, -1))
+      setError(false)
+    }
+  }, [])
 
-  // Expose lock function globally for nav "Hide" button
+  const focusInput = useCallback(() => {
+    inputRef.current?.focus()
+  }, [])
+
   useEffect(() => {
-    (window as unknown as Record<string, unknown>).__lockProposal = handleLock;
-    return () => {
-      delete (window as unknown as Record<string, unknown>).__lockProposal;
-    };
-  }, [handleLock]);
+    if (typeof window !== 'undefined') {
+      (window as unknown as Record<string, unknown>).relockProposal = () => {
+        localStorage.removeItem(STORAGE_KEY)
+        setIsUnlocked(false)
+        setIsExiting(false)
+        setCode('')
+        setError(false)
+      }
+    }
+  }, [])
 
-  if (unlocked === null) {
-    return (
-      <div className="fixed inset-0 bg-[#0a0f1a] z-[9999] flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-white/20 border-t-white/80 rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (unlocked) {
-    return <>{children}</>;
-  }
+  if (!mounted) return null
+  if (isUnlocked && !isExiting) return <>{children}</>
 
   return (
     <>
-      <div className="hidden">{children}</div>
+      {isUnlocked && children}
       <div
-        className={`fixed inset-0 z-[9999] flex flex-col items-center justify-between overflow-hidden ${exiting ? "lock-exiting" : "lock-overlay"}`}
-        onClick={() => inputRef.current?.focus()}
+        className={`fixed inset-0 z-[9999] flex flex-col items-center justify-between overflow-hidden ${isExiting ? 'lock-exiting' : 'lock-entering'}`}
+        onClick={focusInput}
+        style={{ background: '#0a0f1a' }}
       >
-        {/* Background */}
-        <div className="absolute inset-0 bg-[#0a0f1a]" />
-        <div
-          className="absolute inset-0 opacity-45"
-          style={{
-            background:
-              "linear-gradient(160deg, #032572 0%, #021d5a 40%, #010e2e 100%)",
-          }}
-        />
-        <div className="absolute inset-0 hero-pattern opacity-30" />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at top center, rgba(3,37,114,0.4) 0%, transparent 60%)",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 right-0 h-48"
-          style={{
-            background:
-              "linear-gradient(to top, #0a0f1a 0%, transparent 100%)",
-          }}
-        />
-
-        {/* Decorative lines */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
-          <line x1="10%" y1="0" x2="30%" y2="100%" stroke="white" strokeWidth="1" />
-          <line x1="70%" y1="0" x2="90%" y2="100%" stroke="white" strokeWidth="1" />
-          <line x1="0" y1="30%" x2="100%" y2="40%" stroke="white" strokeWidth="0.5" />
-        </svg>
+        {/* Background layers */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/rasheed-kemy-oqY09oVTa3k-unsplash.jpg"
+            alt=""
+            fill
+            className="object-cover opacity-30"
+            priority
+          />
+          <div className="absolute inset-0" style={{
+            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(10,15,26,0.6) 60%, rgba(10,15,26,0.95) 100%)'
+          }} />
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(to top, rgba(10,15,26,1) 0%, transparent 40%)'
+          }} />
+          <div className="absolute inset-0" style={{
+            background: 'radial-gradient(ellipse at 50% 0%, rgba(3,37,114,0.25) 0%, transparent 60%)'
+          }} />
+        </div>
 
         {/* Top section */}
-        <div className="relative z-10 flex flex-col items-center pt-12 sm:pt-16 gap-6 anim-fade-up">
-          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/[0.12] backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-blue-400 pulse-dot" />
-            <span className="text-[0.7rem] font-semibold tracking-[0.1em] uppercase text-white/70">
-              Confidential &middot; For GCT Review
+        <div className="relative z-10 flex flex-col items-center pt-12 sm:pt-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm mb-8">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0a4bcc] pulse-dot" />
+            <span className="text-[0.65rem] font-semibold tracking-[0.12em] uppercase text-white/60">
+              Confidential · For GCT Review
             </span>
           </div>
-
-          <div className="flex items-center gap-4 sm:gap-6">
-            <Image
-              src="/logos/mvne.png"
-              alt="MVNE"
-              width={100}
-              height={30}
-              className="h-6 sm:h-8 w-auto brightness-0 invert opacity-80"
-              unoptimized
-            />
+          <div className="flex items-center gap-4">
+            <Image src="/logos/MVNE.png" alt="MVNE" width={100} height={36} className="h-7 w-auto brightness-0 invert opacity-80" />
             <div className="w-px h-6 bg-white/20" />
-            <Image
-              src="/logos/gct-logo.svg"
-              alt="GCT"
-              width={60}
-              height={24}
-              className="h-5 sm:h-7 w-auto brightness-0 invert opacity-80"
-              unoptimized
-            />
+            <div className="text-white/80 text-lg font-bold tracking-wide">GCT</div>
           </div>
         </div>
 
-        {/* Centre text */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 anim-fade-up delay-200">
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight text-white">
-            ENTER THE 4<br />
-            DIGIT CODE<br />
-            <span className="text-blue-400">TO VIEW</span>
-            <br />
-            <span className="text-white/40">THE PROPOSAL.</span>
+        {/* Centre headline */}
+        <div className="relative z-10 flex flex-col items-center px-6 -mt-8">
+          <h1 className="text-center leading-[0.92]">
+            <span className="block text-[clamp(2.5rem,8vw,5.5rem)] font-black text-white/90 tracking-tight">
+              ENTER THE 4
+            </span>
+            <span className="block text-[clamp(2.5rem,8vw,5.5rem)] font-black text-white/90 tracking-tight">
+              DIGIT CODE
+            </span>
+            <span className="block text-[clamp(2.5rem,8vw,5.5rem)] font-black text-[#4a8eff] tracking-tight mt-1">
+              TO VIEW
+            </span>
+            <span className="block text-[clamp(2.5rem,8vw,5.5rem)] font-black text-white/30 tracking-tight">
+              THE PROPOSAL.
+            </span>
           </h1>
         </div>
 
-        {/* Bottom: code input */}
-        <div className="relative z-10 flex flex-col items-center pb-16 sm:pb-24 gap-6 anim-fade-up delay-400">
-          <div className={`flex gap-3 sm:gap-4 ${error ? "lock-shake" : ""}`}>
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`w-14 h-16 sm:w-16 sm:h-20 rounded-lg flex items-center justify-center text-2xl sm:text-3xl font-bold transition-all duration-200 ${
-                  error
-                    ? "border-2 border-red-500 bg-red-500/10 text-red-400"
-                    : code[i]
-                      ? "border-2 border-blue-400 bg-blue-400/10 text-white"
-                      : i === code.length
-                        ? "border-2 border-white/40 bg-white/[0.06] text-white"
-                        : "border-2 border-white/15 bg-white/[0.03] text-white/30"
-                }`}
-              >
-                {code[i] ? "\u2022" : ""}
-              </div>
-            ))}
-          </div>
-
+        {/* Bottom code input */}
+        <div className="relative z-10 flex flex-col items-center pb-16 sm:pb-20">
           <input
             ref={inputRef}
             type="tel"
             inputMode="numeric"
             pattern="[0-9]*"
-            maxLength={4}
             value={code}
-            onChange={(e) => handleInput(e.target.value)}
+            onChange={e => handleCodeChange(e.target.value.replace(/\D/g, ''))}
+            onKeyDown={handleKeyDown}
             className="absolute opacity-0 w-0 h-0"
             autoFocus
-            aria-label="Enter 4-digit code"
+            aria-label="Enter 4-digit access code"
           />
 
+          <div className={`flex gap-3 sm:gap-4 mb-6 ${shaking ? 'lock-shake' : ''}`}>
+            {[0, 1, 2, 3].map(i => {
+              const isFilled = i < code.length
+              const isCurrent = i === code.length
+              const isError = error
+
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-center rounded-2xl border-2 transition-all duration-200"
+                  style={{
+                    width: 'clamp(4rem, 14vw, 6rem)',
+                    height: 'clamp(5rem, 18vw, 7.5rem)',
+                    background: isError
+                      ? 'rgba(239,68,68,0.1)'
+                      : isFilled
+                        ? 'rgba(74,138,255,0.12)'
+                        : isCurrent
+                          ? 'rgba(74,138,255,0.06)'
+                          : 'rgba(255,255,255,0.03)',
+                    borderColor: isError
+                      ? 'rgba(239,68,68,0.5)'
+                      : isFilled
+                        ? 'rgba(74,138,255,0.4)'
+                        : isCurrent
+                          ? 'rgba(74,138,255,0.25)'
+                          : 'rgba(255,255,255,0.08)',
+                    boxShadow: isFilled && !isError
+                      ? '0 0 30px rgba(74,138,255,0.12)'
+                      : 'none',
+                  }}
+                >
+                  {isFilled && (
+                    <span className="text-3xl sm:text-4xl font-bold text-white/90">
+                      {code[i]}
+                    </span>
+                  )}
+                  {isCurrent && !isFilled && (
+                    <span className="w-0.5 h-8 bg-[#4a8eff]/60 rounded-full animate-pulse" />
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
           {error && (
-            <p className="text-red-400 text-sm font-medium anim-fade-in">
-              Incorrect code &mdash; try again
+            <p className="text-red-400/80 text-sm font-medium tracking-wide">
+              Incorrect code — try again
             </p>
           )}
-
           {!error && (
-            <p className="text-white/30 text-xs tracking-wide">
-              Tap to enter code
+            <p className="text-white/25 text-xs tracking-widest uppercase">
+              Enter access code
             </p>
           )}
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,82 +1,102 @@
+'use client'
+
+import AnimateOnScroll from '@/components/AnimateOnScroll'
+
 const steps = [
   {
-    num: 1,
-    title: "Approve Engagement",
-    description: "Review and approve the combined proposal to initiate engagement.",
-    urgent: true,
+    num: '01',
+    title: 'Review & Approve Engagement',
+    badge: 'Action Required',
+    badgeColor: '#ef4444',
+    desc: 'Review the combined proposal and confirm which solutions GCT wishes to proceed with. Nominate Steering Committee members from GCT\'s leadership team to co-chair the Joint Steering Committee with DSG\'s CEO.',
   },
   {
-    num: 2,
-    title: "Schedule Discovery Workshop",
-    description: "Deep-dive into requirements for each solution area",
-    urgent: false,
+    num: '02',
+    title: 'Schedule Discovery Workshop',
+    badge: 'Within 14 days',
+    badgeColor: '#032572',
+    desc: 'Arrange a deep-dive discovery workshop with GCT\'s executive and operational teams to define detailed requirements for each solution area — technical infrastructure, subscriber volumes, channel requirements, and integration points.',
   },
   {
-    num: 3,
-    title: "Provide Baseline Data",
-    description: "Subscriber data, infrastructure specs, operational KPIs",
-    urgent: false,
+    num: '03',
+    title: 'Provide Baseline Data',
+    badge: 'Prior to kick-off',
+    badgeColor: '#032572',
+    desc: 'Share relevant baseline data with DSG including current subscriber metrics, infrastructure specifications, operational KPIs, customer service volumes, and any existing vendor contracts or platform documentation.',
   },
   {
-    num: 4,
-    title: "Kick-off Session",
-    description: "Joint kick-off with all stakeholders to align on timelines and deliverables",
-    urgent: false,
+    num: '04',
+    title: 'Joint Kick-Off Session',
+    badge: 'Programme launch',
+    badgeColor: '#10b981',
+    desc: 'Conduct a formal kick-off session with all stakeholders to align on priorities, success metrics, governance structure, timelines, and the integrated programme roadmap across all engaged solutions.',
   },
-];
+]
 
 export default function NextSteps() {
   return (
-    <section id="next-steps" className="py-24 bg-[#f8f9fa]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16 anim-fade-up">
-          <p className="section-label mb-3">Moving Forward</p>
-          <h2 className="text-4xl sm:text-5xl font-black text-[#212529] leading-tight">
-            Next <span className="text-[#032572]">Steps</span>
+    <section id="next-steps" className="py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <AnimateOnScroll animation="fade-up">
+          <div className="section-label mb-4">10 — Next Steps</div>
+        </AnimateOnScroll>
+
+        <AnimateOnScroll animation="fade-up" delay={80}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-4">
+            The Path to <span style={{ color: '#032572' }}>Getting Started</span>
           </h2>
-        </div>
-
-        {/* Sequential steps */}
-        <div className="space-y-6 mb-16">
-          {steps.map((step, i) => (
-            <div
-              key={i}
-              className={`bg-white border border-[#dee2e6] rounded-sm p-8 flex items-start gap-6 card-lift anim-fade-up delay-${(i + 1) * 100}`}
-            >
-              <span className={`w-12 h-12 rounded-lg flex items-center justify-center text-lg font-bold shrink-0 ${
-                step.urgent ? "bg-[#032572] text-white" : "bg-[#e8eef9] text-[#032572]"
-              }`}>
-                {step.num}
-              </span>
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-1">
-                  <h3 className="text-lg font-bold text-[#212529]">{step.title}</h3>
-                  {step.urgent && (
-                    <span className="text-[10px] font-bold tracking-[0.1em] uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200">
-                      Urgent
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-[#6c757d]">{step.description}</p>
-              </div>
-              {i < steps.length - 1 && (
-                <div className="hidden sm:block absolute left-[3.25rem] bottom-0 translate-y-full w-px h-6 bg-[#dee2e6]" />
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Decision deadline */}
-        <div className="bg-[#032572] rounded-sm p-8 sm:p-12 text-center anim-fade-up delay-500">
-          <p className="text-lg sm:text-xl text-white/90 leading-relaxed">
-            &ldquo;We look forward to discussing this proposal at Q&amp;A on Tuesday. Please direct any questions to{" "}
-            <a href="mailto:edwardw@mvne.co.za" className="text-blue-300 underline underline-offset-2">
-              edwardw@mvne.co.za
-            </a>
-            &rdquo;
+          <p className="text-base sm:text-lg text-[#6c757d] leading-relaxed max-w-3xl mb-12">
+            Four clear actions stand between today and the launch of GCT&apos;s digital transformation programme.
           </p>
+        </AnimateOnScroll>
+
+        {/* Steps */}
+        <div className="relative">
+          {/* Connecting line */}
+          <div className="absolute left-[27px] top-0 bottom-0 w-px bg-gray-200 hidden md:block" />
+
+          <div className="space-y-4">
+            {steps.map((step, i) => (
+              <AnimateOnScroll key={i} animation="fade-up" delay={160 + i * 100}>
+                <div className="relative flex items-start gap-5 bg-white border border-gray-200/60 rounded-2xl p-6 sm:p-8 card-lift">
+                  {/* Number */}
+                  <div className="w-14 h-14 rounded-2xl bg-[#032572] flex items-center justify-center shrink-0 relative z-10">
+                    <span className="text-lg font-black text-white">{step.num}</span>
+                  </div>
+
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <h4 className="text-lg font-bold text-[#212529]">{step.title}</h4>
+                      <span
+                        className="text-[0.6rem] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full text-white"
+                        style={{ backgroundColor: step.badgeColor }}
+                      >
+                        {step.badge}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#6c757d] leading-relaxed">{step.desc}</p>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
         </div>
+
+        {/* Decision callout */}
+        <AnimateOnScroll animation="scale-in" delay={600}>
+          <div className="mt-12 bg-[#032572] rounded-2xl p-8 sm:p-10 text-center">
+            <p className="text-lg sm:text-xl font-bold text-white mb-2">
+              We look forward to discussing this proposal at Q&A on Tuesday.
+            </p>
+            <p className="text-white/60 text-sm">
+              Please direct any questions to{' '}
+              <a href="mailto:edwardw@mvne.co.za" className="text-white/90 underline underline-offset-2 hover:text-white transition-colors">
+                edwardw@mvne.co.za
+              </a>
+            </p>
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
-  );
+  )
 }

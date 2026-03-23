@@ -1,115 +1,136 @@
+'use client'
+
+import AnimateOnScroll from '@/components/AnimateOnScroll'
+import Image from 'next/image'
+
 const coreCapabilities = [
-  {
-    title: "360\u00b0 Customer View",
-    description: "Gain a complete view of customers and operations, unifying insights across channels and systems",
-  },
-  {
-    title: "Predictive Foresight",
-    description: "Anticipate behaviour, market shifts, and opportunities before they happen",
-  },
-  {
-    title: "Real-Time Decisions",
-    description: "Drive faster, smarter decisions with live data streams and instant recommendations",
-  },
-  {
-    title: "Persona-First Targeting",
-    description: "Move beyond basic demographic segmentation to persona-driven campaigns",
-  },
-  {
-    title: "Measurable ROI",
-    description: "Turn every dataset into clear, measurable business outcomes",
-  },
-];
+  { num: '01', title: '360° Customer & Operations View', desc: 'Unify insights from every channel and system into a single intelligence layer. CRM, billing, network usage, campaign data, and customer service data merge into one coherent picture.' },
+  { num: '02', title: 'Predictive Foresight', desc: 'Move from reactive reporting to proactive intelligence. ML models anticipate customer behaviour, market shifts, and emerging opportunities before they become obvious.' },
+  { num: '03', title: 'Real-Time Decision Engine', desc: 'Drive faster, smarter decisions with live data streams and instant recommendations. Right-now intelligence that GCT\'s teams can act on immediately.' },
+  { num: '04', title: 'Persona-First Targeting', desc: 'Move beyond basic demographic segmentation to true persona modelling. Rich, behavioural personas from actual customer data — not assumed demographics.' },
+  { num: '05', title: 'Measurable ROI', desc: 'Every dataset becomes a clear, measurable business outcome. The attribution engine tracks the entire journey from data insight to campaign execution to revenue.' },
+]
 
 const adFeatures = [
-  {
-    title: "Scalable Creative Production",
-    description: "Rapid production of scalable, dynamic ad creatives without relying on external design teams",
-  },
-  {
-    title: "Accelerated Campaign Launch",
-    description: "Faster time to market while maintaining consistency and performance best practices",
-  },
-  {
-    title: "Dynamic Product Ads",
-    description: "Automated creative updates directly from e-commerce data with clear attribution and measurable ROI",
-  },
-];
+  { title: 'Scalable Creative Production', desc: 'Rapid production of dynamic ad creatives without external design teams. PersAIc generates and adapts creative assets at scale — maintaining brand consistency while reducing cost.' },
+  { title: 'Accelerated Campaign Launch', desc: 'Automated workflows handle creative generation, audience targeting, channel allocation, and performance tracking — accelerating time to market.' },
+  { title: 'Dynamic Product Ads & Attribution', desc: 'Automated creative updates directly from product catalogue data. Every ad is hyper-relevant with clear attribution and measurable ROI.' },
+]
 
 export default function PersaicSection() {
   return (
-    <section id="persaic" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-16 anim-fade-up">
-          <p className="section-label mb-3">07 &mdash; PersAIc</p>
-          <h2 className="text-4xl sm:text-5xl font-black text-[#212529] leading-tight">
-            Data Intelligence &amp; Advertising
+    <section id="persaic" className="py-24 lg:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <AnimateOnScroll animation="fade-up">
+          <Image src="/logos/Persaic.png" alt="PersAIc" width={120} height={48} className="h-8 w-auto mb-6" />
+          <div className="section-label mb-4">07 — PersAIc</div>
+        </AnimateOnScroll>
+
+        <AnimateOnScroll animation="fade-up" delay={80}>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-2">
+            Data Intelligence <span style={{ color: '#032572' }}>& Advertising</span>
           </h2>
-          <p className="text-xl font-semibold text-[#032572] mt-2">Turning Data Into Actionable Intelligence</p>
-          <p className="mt-4 text-lg text-[#6c757d] max-w-3xl">
-            PersAIc transforms raw data into real-time intelligence that drives smarter decisions. Instead of overwhelming businesses with static dashboards or siloed reports, PersAIc creates a living ecosystem where data flows seamlessly across teams, systems, and channels.
-          </p>
-        </div>
+          <p className="text-lg text-[#6c757d] font-medium mb-8">Turning Data Into Actionable Intelligence</p>
+        </AnimateOnScroll>
 
-        {/* Core capabilities */}
-        <div className="mb-16">
-          <h3 className="text-lg font-bold text-[#212529] mb-6 anim-fade-up">Core Capabilities</h3>
-          <div className="space-y-4">
-            {coreCapabilities.map((cap, i) => (
-              <div
-                key={i}
-                className={`bg-white border border-[#dee2e6] rounded-sm p-6 flex items-start gap-4 card-lift anim-fade-up delay-${Math.min((i + 1) * 100, 500)}`}
-              >
-                <span className="w-10 h-10 rounded-lg bg-[#032572] text-white flex items-center justify-center text-sm font-bold shrink-0">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h4 className="text-base font-bold text-[#212529]">{cap.title}</h4>
-                  <p className="text-sm text-[#6c757d] mt-1">{cap.description}</p>
-                </div>
-              </div>
-            ))}
+        <AnimateOnScroll animation="fade-up" delay={160}>
+          <div className="max-w-3xl mb-12">
+            <p className="text-base sm:text-lg text-[#6c757d] leading-relaxed mb-4">
+              PersAIc transforms raw data into real-time intelligence that drives smarter decisions and scalable revenue. Instead of overwhelming GCT&apos;s teams with static dashboards, PersAIc creates a living ecosystem where data flows seamlessly across teams, systems, and channels.
+            </p>
+            <p className="text-base sm:text-lg text-[#6c757d] leading-relaxed">
+              Where Xanite manages the subscriber lifecycle, PersAIc sits above it as the intelligence and monetisation engine — enriching data with predictive analytics and activating it through dynamic advertising.
+            </p>
           </div>
-        </div>
-
-        {/* Ad Platform features */}
-        <div className="mb-12">
-          <h3 className="text-lg font-bold text-[#212529] mb-6 anim-fade-up delay-600">Ad Platform</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {adFeatures.map((feature, i) => (
-              <div
-                key={i}
-                className={`bg-[#f8f9fa] border border-[#dee2e6] rounded-sm p-8 card-lift anim-fade-up delay-${(i + 6) * 100}`}
-              >
-                <h4 className="text-base font-bold text-[#212529] mb-2">{feature.title}</h4>
-                <p className="text-sm text-[#6c757d] leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        </AnimateOnScroll>
 
         {/* Tagline */}
-        <div className="bg-[#032572] rounded-sm p-8 sm:p-12 mb-12 text-center anim-fade-up delay-800">
-          <p className="text-xl sm:text-2xl font-black text-white">
-            &ldquo;Smarter Ads. Real-Time Insights. Scalable Revenue.&rdquo;
-          </p>
+        <AnimateOnScroll animation="scale-in" delay={240}>
+          <div className="bg-[#032572] rounded-2xl p-8 sm:p-10 text-center mb-16">
+            <p className="text-2xl sm:text-3xl font-black text-white">
+              Smarter Ads. Real-Time Insights. Scalable Revenue.
+            </p>
+          </div>
+        </AnimateOnScroll>
+
+        {/* Core capabilities */}
+        <AnimateOnScroll animation="fade-up" delay={80}>
+          <h3 className="text-xl font-bold text-[#212529] mb-6">Intelligence Capabilities</h3>
+        </AnimateOnScroll>
+
+        <div className="space-y-3 mb-16">
+          {coreCapabilities.map((cap, i) => (
+            <AnimateOnScroll key={i} animation="fade-up" delay={160 + i * 80}>
+              <div className="bg-white border border-gray-200/60 rounded-2xl p-6 card-lift">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-[#10b981]/10 flex items-center justify-center shrink-0">
+                    <span className="text-sm font-bold text-[#10b981]">{cap.num}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-[#212529] mb-1">{cap.title}</h4>
+                    <p className="text-sm text-[#6c757d] leading-relaxed">{cap.desc}</p>
+                  </div>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          ))}
         </div>
 
-        {/* Commercial */}
-        <div className="bg-white border border-[#dee2e6] rounded-sm p-8 mb-6 anim-fade-up">
-          <p className="text-sm font-semibold text-[#212529] mb-1">Commercial</p>
-          <p className="text-sm text-[#6c757d]">
-            Platform licensing based on data volume and feature requirements. Contact for a tailored quotation.
-          </p>
+        {/* Ad Platform */}
+        <div className="section-divider mb-12" />
+        <AnimateOnScroll animation="fade-up" delay={80}>
+          <h3 className="text-2xl sm:text-3xl font-black text-[#212529] mb-2">The Advertising Engine</h3>
+          <p className="text-[#6c757d] mb-8 max-w-2xl">PersAIc&apos;s advertising capabilities turn GCT&apos;s first-party data into a scalable revenue channel.</p>
+        </AnimateOnScroll>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          {adFeatures.map((feature, i) => (
+            <AnimateOnScroll key={i} animation="fade-up" delay={160 + i * 80}>
+              <div className="bg-[#f8f9fa] border border-gray-200/60 rounded-2xl p-6 card-lift h-full">
+                <div className="w-8 h-8 rounded-lg bg-[#10b981]/10 flex items-center justify-center mb-4">
+                  <svg className="w-4 h-4 text-[#10b981]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <h4 className="font-bold text-[#212529] mb-2 text-sm">{feature.title}</h4>
+                <p className="text-sm text-[#6c757d] leading-relaxed">{feature.desc}</p>
+              </div>
+            </AnimateOnScroll>
+          ))}
         </div>
 
-        {/* Contact */}
-        <div className="text-sm text-[#6c757d] anim-fade-up">
-          <p>
-            <span className="font-medium text-[#212529]">persaic.com</span> &middot; vincentm@dsg.co.za &middot; +27 82 998 5412
-          </p>
-        </div>
+        {/* Synergy callout */}
+        <AnimateOnScroll animation="fade-up" delay={160}>
+          <div className="bg-[#10b981]/5 border border-[#10b981]/15 rounded-2xl p-6 mb-12">
+            <div className="flex items-center gap-2 mb-3">
+              <svg className="w-5 h-5 text-[#10b981]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              <h4 className="font-bold text-[#212529] text-sm">PersAIc + Xanite Synergy</h4>
+            </div>
+            <p className="text-sm text-[#6c757d] leading-relaxed">
+              Xanite manages subscriber data, consent, and lifecycle journeys. PersAIc enriches that data with predictive intelligence and activates it through advertising. Together, they create a closed-loop system where subscriber data drives campaigns, campaigns drive revenue, and revenue data feeds back into smarter future campaigns.
+            </p>
+          </div>
+        </AnimateOnScroll>
+
+        {/* Commercial & Contact */}
+        <AnimateOnScroll animation="fade-up" delay={240}>
+          <div className="bg-white border border-gray-200/60 rounded-2xl p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h4 className="font-bold text-[#212529] mb-1">Platform Licensing</h4>
+                <p className="text-sm text-[#6c757d]">Based on data volume, active advertising channels, and feature requirements.</p>
+              </div>
+              <div className="text-sm text-[#6c757d]">
+                <p className="font-medium text-[#212529]">Contact</p>
+                <p>persaic.com · vincentm@dsg.co.za</p>
+                <p>+27 82 998 5412</p>
+              </div>
+            </div>
+          </div>
+        </AnimateOnScroll>
       </div>
     </section>
-  );
+  )
 }
