@@ -12,6 +12,8 @@ import PersaicSection from "@/components/sections/PersaicSection";
 import CombinedCommercial from "@/components/sections/CombinedCommercial";
 import WhyMVNE from "@/components/sections/WhyMVNE";
 import NextSteps from "@/components/sections/NextSteps";
+import ProgrammeTimeline from "@/components/sections/ProgrammeTimeline";
+import CostsSummary from "@/components/sections/CostsSummary";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
@@ -31,6 +33,8 @@ export default function Home() {
       <CombinedCommercial />
       <WhyMVNE />
       <NextSteps />
+      <ProgrammeTimeline />
+      <CostsSummary />
       <Footer />
     </>
   );
