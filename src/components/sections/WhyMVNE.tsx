@@ -9,9 +9,9 @@ const ecosystem = [
   { name: 'CXG', desc: 'Integrated customer experience solutions. 27 years of delivery. 100+ clients. 1,000+ employees across Africa.', site: 'cxg.co.za', logo: '/logos/CXG.png' },
   { name: 'Xanite', desc: 'The MVNO value engine. 16 microservices for advanced segmentation, journey orchestration, and campaigns.', site: 'xanite.com', logo: '/logos/Xanite logo.png' },
   { name: 'PersAIc', desc: 'Turning data into actionable intelligence and scalable revenue through AI-powered insights and dynamic advertising.', site: 'persaic.com', logo: '/logos/Persaic.png' },
-  { name: 'eInsurer', desc: 'ProActive cyber insurance with dynamic risk detection, adaptive coverage, and premium incentives.', site: 'einsurer.co.za', logo: null },
-  { name: 'Digital Resilience', desc: 'Enterprise-grade endpoint protection, managed detection and response through Bitdefender and McAfee.', site: null, logo: null },
-  { name: 'BroadBrand', desc: 'AI-driven marketing strategy, content creation, digital advertising, and social media management.', site: null, logo: null },
+  { name: 'eInsurer', desc: 'ProActive cyber insurance with dynamic risk detection, adaptive coverage, and premium incentives.', site: 'einsurer.co.za', logo: '/logos/EInsurer.png' },
+  { name: 'Digital Resilience', desc: 'Enterprise-grade endpoint protection, managed detection and response through Bitdefender and McAfee.', site: null, logo: '/logos/Digitalresilience.png' },
+  { name: 'BroadBrand', desc: 'AI-driven marketing strategy, content creation, digital advertising, and social media management.', site: null, logo: '/logos/Broadbrand.png' },
 ]
 
 const differentiators = [

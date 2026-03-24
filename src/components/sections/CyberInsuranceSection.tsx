@@ -2,6 +2,7 @@
 
 import AnimateOnScroll from '@/components/AnimateOnScroll'
 import AnimatedCounter from '@/components/AnimatedCounter'
+import Image from 'next/image'
 
 const marketStats = [
   { value: 10.5, suffix: ' Trillion', prefix: '$', label: 'Projected annual cybercrime damage globally', decimals: 1 },
@@ -43,6 +44,7 @@ export default function CyberInsuranceSection() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll animation="fade-up">
           <div className="section-label mb-4">04 — Cyber Insurance</div>
+          <Image src="/logos/EInsurer.png" alt="eInsurer" width={120} height={40} className="h-8 w-auto mt-4 mb-6 object-contain" />
         </AnimateOnScroll>
 
         <AnimateOnScroll animation="fade-up" delay={80}>
